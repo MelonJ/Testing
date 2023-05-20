@@ -1,3 +1,14 @@
+/*
+Author: Jaime Malone
+Class: CIS 241
+Professor: Dr.Kalafat
+Date: 05/20/23
+Description: Homework 2, Question 6
+
+Electric bill calculator that takes in user input and calculates the appropriate
+bill depending on inputed kiloWatt hours
+
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
