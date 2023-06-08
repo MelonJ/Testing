@@ -1,17 +1,18 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 #define ASCII_OFFSET 32
 #define ASCII_LIMIT 95
 
-int encrypt_file(char in_filename, char out_filename, char key){
+int encrypt_file(char *in_filename, char *out_filename, char *key){
 
 	//variables
 	FILE *input_file;
 	FILE *output_file;
-	char ch;
-	char ch_o;
-	char key_offset;
+	unsigned char ch;
+	unsigned char ch_o;
+	unsigned char key_offset;
 	int key_index; //index to keep track of location in key.
 
 	//open input file
@@ -39,16 +40,16 @@ int encrypt_file(char in_filename, char out_filename, char key){
 	while(!feof(input_file)){
 
 		//if the character is not a terminating character
-		if(ch != "\n"){
+		if(ch != '\n'){
 			//subtract offsets
 			ch -= ASCII_OFFSET;
 			key_offset = key[key_index] - ASCII_OFFSET;
-
+			printf("key offset %d: %d\n", key_index, key_offset);
 			//add offset values
 			ch_o = (ch + key_offset);
 
 			//if the sum is grater than limit
-			if(ch_o => ASCII_LIMIT){
+			if(ch_o > (ASCII_LIMIT)){
 				ch_o = ch_o%ASCII_LIMIT + ASCII_OFFSET;
 			}
 
@@ -57,12 +58,13 @@ int encrypt_file(char in_filename, char out_filename, char key){
 				ch_o += ASCII_OFFSET;
 
 			//write to output file
+			printf("char : %c\n", ch_o);
 			fprintf(output_file,"%c", ch_o);
 
 			key_index++;
 
 			//if we've reached the end of the key arr then reset index
-			if(key[key_index] == '\0')
+			if(key[key_index] == '\n')
 				key_index = 0;
 		}
 
@@ -73,19 +75,20 @@ int encrypt_file(char in_filename, char out_filename, char key){
 	//close files
 	fclose(input_file);
 	fclose(output_file);
+	printf("Done Encrypting!\n\n");
 
 	return 0;
 }
 
-int decrypt_file(char in_filename, char out_filename, char key){
+int decrypt_file(char *in_filename, char *out_filename, char *key){
 
 
 	//variables
 	FILE *input_file;
 	FILE *output_file;
-	char ch;
-	char ch_o;
- 	char key_offset;
+	unsigned char ch;
+	unsigned char ch_o;
+ 	unsigned char key_offset;
 	int key_index; //index to keep track of location in key.
 
 	//open input file
@@ -111,22 +114,36 @@ int decrypt_file(char in_filename, char out_filename, char key){
 
 	while(!feof(input_file)){
 
-		if(ch != "\n"){
+		if(ch != '\n'){
 			//subtract offset from key
 			key_offset = key[key_index] - ASCII_OFFSET;
 
+			printf("----------------------------------------\n");
+			printf("Character from file: %c\n", ch);
+			printf("Value of character from file: %d\n", ch);
+			printf("Key index: %d\n", key_index);
+			printf("Key offset: %d\n", key_offset);
+			printf("Key value: %c\n", key[key_index]);
+
 			//ADD SOMETHING SMART HERE
-			if(((ASCII_LIMIT+ASCII_OFFSET) - ch) > ASCII_OFFSET){
+			//if((ch) - ASCII_OFFSET - (key_offset)){
 
-				ch -= ASCII_OFFSET;
-				ch += ASCII_LIMIT;
-				ch_o = (ch - key_offset) + ASCII_OFFSET;
-			}
+			//	ch -= ASCII_OFFSET;
+			//	printf("Step 1 ch: %d\n", ch);
+			//	ch = ch + ASCII_LIMIT;
+			//	printf("Step 2 ch: %d\n", ch);
+			//	ch_o = (ch - key_offset) + ASCII_OFFSET;
+			//	printf("Step 3 ch: %d\n", ch);
+			//}
 
-			else{
+			//else{
+			//	printf("Step alt ch: %d\n", ch);
 				//add back key offset and the ascii offset
-				ch_o = (ch - ASCII_OFFSET - key_offset) + ASCII_OFFSET;
-			}
+			//	ch_o = (ch - ASCII_OFFSET - key_offset) + ASCII_OFFSET;
+			//}
+			ch_o = ((ch - ASCII_OFFSET - key_offset + ASCII_LIMIT)%ASCII_LIMIT) + ASCII_OFFSET;
+			printf("ch: %c\n", ch_o);
+			printf("ch value: %d\n", ch_o);
 
 			//write to output file
 			fprintf(output_file,"%c", ch_o);
@@ -134,7 +151,7 @@ int decrypt_file(char in_filename, char out_filename, char key){
 			key_index++;
 
 			//if we've reached the end of the key arr then reset
-			if(key[key_index] == '\0')
+			if(key[key_index] == '\n')
 				key_index = 0;
 		}
 
@@ -144,5 +161,6 @@ int decrypt_file(char in_filename, char out_filename, char key){
 
 	fclose(input_file);
 	fclose(output_file);
+	printf("Done Decrypting!\n\n");
 	return 0;
 }

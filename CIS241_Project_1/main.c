@@ -11,6 +11,7 @@
 //includes
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "encryption.h"
 
 int main(){
@@ -32,12 +33,21 @@ int main(){
  		scanf("%s", out_filename);
 
 		printf("Enter key: \n");
-		scanf("%s", encrypt_key);
+		getchar();
+		fgets(encrypt_key, 1024, stdin);
+
+		int i = 0;
+
+		while(encrypt_key[i] != '\n'){
+
+			printf("key value at %d: %c\n", i, encrypt_key[i]);
+			i++;
+		}
 
 		operation = ' ';
 
 		//read in operation
-		while(operation != 'E' || operation != 'D' || operation != 'Q'){
+		while(operation != 'E' && operation != 'D' && operation != 'Q'){
 
 			printf("What would you like to do?\n");
 			printf("\tE: Encrypt\n");
@@ -45,26 +55,36 @@ int main(){
 			printf("\tQ: Quit\n");
 			scanf("%c", &operation);
 			operation = toupper(operation); //change to upper case
+			printf("input: %c\n", operation);
 
-			if(operation != 'E' || operation != 'D' || operation != 'Q'){
+			if(operation != 'E' && operation != 'D' && operation != 'Q'){
 				printf("Invalid operation! Please try again\n\n");
 			}
+
 			getchar(); //flush input buffer
+
+			if(operation == 'E'){
+
+				//call encryption function
+				if(encrypt_file(in_filename, out_filename, encrypt_key) == 1)
+					return 1;
+
+				//reset operation
+				operation = ' ';
+			}
+
+			else if(operation == 'D'){
+
+				if(decrypt_file(in_filename, out_filename, encrypt_key) == 1)
+					return 1;
+
+				//reset operation
+				operation = ' ';
+			}
 		}
 
-		if(operation == 'E'){
-			//call encryption function
-			if(encrypt_file(in_filename, out_filename, encrypt_key) == 1)
-				return 1;
-		}
-
-		else if(operation == 'D'){
-			//call decrypt function
-			if(decrypt_file(in_filename, out_filename, encrypt_key) == 1)
-				return 1;
-		}
 	}
 
-	printf("Thank you, come again!");
+	printf("Thank you, come again!\n");
 	return 0;
 }
