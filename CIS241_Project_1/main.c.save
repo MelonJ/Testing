@@ -28,12 +28,10 @@ int main(){
 	//while the user does not want to quit
 	while(operation != 'Q'){
 
-		operation = ' ';
-
 		//read in operation
 		while(operation != 'E' && operation != 'D' && operation != 'Q'){
 
-			printf("What would you like to do?\n");
+ 			printf("What would you like to do?\n");
 			printf("\tE: Encrypt\n");
 			printf("\tD: Decrypt\n");
 			printf("\tQ: Quit\n");
@@ -49,14 +47,13 @@ int main(){
 
 			if(operation == 'E'){
 
-				//read in user file names
 				printf("Enter the input file name: \n");
 				scanf("%s", in_filename);
 
 				printf("Enter the output file name: \n");
 				scanf("%s", out_filename);
 
-				printf("Enter Encryption key: \n");
+				printf("Enter encryption key: \n");
 				getchar();
 				fgets(encrypt_key, MAX_STRING, stdin);
 
@@ -70,16 +67,15 @@ int main(){
 
 			else if(operation == 'D'){
 
-				//read in user file names
 				printf("Enter the input file name: \n");
 				scanf("%s", in_filename);
 
 				printf("Enter the output file name: \n");
 				scanf("%s", out_filename);
 
-				printf("Enter Encryption key: \n");
+				printf("Enter encryption key: \n");
 				getchar();
-				fgets(encrypt_key, MAX_STRING, stdin);
+				fgets(encrpt_key, MAX_STRING, stdin);
 
 				if(decrypt_file(in_filename, out_filename, encrypt_key) == 1)
 					return 1;
