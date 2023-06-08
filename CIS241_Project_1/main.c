@@ -3,7 +3,10 @@
 *Class: CIS241-01
 *Project: Project 1
 *Date: 06/09/2023
-*Description
+*Description: This program is meant to act as an implementer of the vigenere cipher
+*             It takes an input file and an output file from the user as well as the
+*             key to encrypt or decrypt the input file. This program utilizes
+*             encryption.c, which holds the actual functions that encrypt or decrypt.
 *
 *
 ***********************************************************************************/
