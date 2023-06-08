@@ -1,10 +1,39 @@
+/*****************************************************************************
+*Author: Jaime Malone
+*Class: CIS241-01
+*Project: Project 1
+*Date: 06/09/2023
+*Description: This file holds encryption and decryption functions for
+*	      implementing the Vigenere cipher. The functions both open an input
+	      file to encrypt/decrypt, and an output file to write the results.
+	      If an input file does not exist, then an error is reported.
+	      If an output file does not exist, it will be created. If an output
+	      file exist, it will be overwritten.
+*
+******************************************************************************/
+
+//includes
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
 
+//defines
 #define ASCII_OFFSET 32
 #define ASCII_LIMIT 95
 
+/*
+* Function: encrypt_file
+* ----------------------
+* encrypts an input file using the Vigenere cipher
+*
+* parameters:
+* char *in_filename - string with the input file name
+* char *out_filename - string with output file name
+* char *key - string with key
+*
+* returns:
+* whether there was an error or not as an int. If no erorr, returns 0.
+*/
 int encrypt_file(char *in_filename, char *out_filename, char *key){
 
 	//variables
@@ -47,7 +76,7 @@ int encrypt_file(char *in_filename, char *out_filename, char *key){
 			//add offset values
 			ch_o = (ch + key_offset);
 
-			//if the sum is grater than limit
+			//if the sum is greater than limit
 			if(ch_o > (ASCII_LIMIT)){
 				ch_o = ch_o%ASCII_LIMIT + ASCII_OFFSET;
 			}
@@ -81,6 +110,19 @@ int encrypt_file(char *in_filename, char *out_filename, char *key){
 	return 0;
 }
 
+
+/*
+* Function: decrypt_file
+* ----------------------
+* decrypts an input file using the Vigenere cipher
+*
+* parameters:
+* char *in_filename - string with the input file name
+* char *out_filename - string with output file name
+* char *key - string with key
+*
+* returns: * whether there was an error or not as an int. If no erorr, returns 0.
+*/
 int decrypt_file(char *in_filename, char *out_filename, char *key){
 
 
@@ -139,6 +181,7 @@ int decrypt_file(char *in_filename, char *out_filename, char *key){
 		ch = fgetc(input_file);
 	}
 
+	//close files
 	fclose(input_file);
 	fclose(output_file);
 	printf("Done Decrypting!\n\n");
