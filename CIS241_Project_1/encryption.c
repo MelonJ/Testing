@@ -44,7 +44,6 @@ int encrypt_file(char *in_filename, char *out_filename, char *key){
 			//subtract offsets
 			ch -= ASCII_OFFSET;
 			key_offset = key[key_index] - ASCII_OFFSET;
-			printf("key offset %d: %d\n", key_index, key_offset);
 			//add offset values
 			ch_o = (ch + key_offset);
 
@@ -58,7 +57,6 @@ int encrypt_file(char *in_filename, char *out_filename, char *key){
 				ch_o += ASCII_OFFSET;
 
 			//write to output file
-			printf("char : %c\n", ch_o);
 			fprintf(output_file,"%c", ch_o);
 
 			key_index++;
@@ -67,6 +65,9 @@ int encrypt_file(char *in_filename, char *out_filename, char *key){
 			if(key[key_index] == '\n')
 				key_index = 0;
 		}
+
+		else
+			fprintf(output_file,"%c", '\n');
 
 		//pull new character
 		ch = fgetc(input_file);
@@ -118,32 +119,8 @@ int decrypt_file(char *in_filename, char *out_filename, char *key){
 			//subtract offset from key
 			key_offset = key[key_index] - ASCII_OFFSET;
 
-			printf("----------------------------------------\n");
-			printf("Character from file: %c\n", ch);
-			printf("Value of character from file: %d\n", ch);
-			printf("Key index: %d\n", key_index);
-			printf("Key offset: %d\n", key_offset);
-			printf("Key value: %c\n", key[key_index]);
-
 			//ADD SOMETHING SMART HERE
-			//if((ch) - ASCII_OFFSET - (key_offset)){
-
-			//	ch -= ASCII_OFFSET;
-			//	printf("Step 1 ch: %d\n", ch);
-			//	ch = ch + ASCII_LIMIT;
-			//	printf("Step 2 ch: %d\n", ch);
-			//	ch_o = (ch - key_offset) + ASCII_OFFSET;
-			//	printf("Step 3 ch: %d\n", ch);
-			//}
-
-			//else{
-			//	printf("Step alt ch: %d\n", ch);
-				//add back key offset and the ascii offset
-			//	ch_o = (ch - ASCII_OFFSET - key_offset) + ASCII_OFFSET;
-			//}
 			ch_o = ((ch - ASCII_OFFSET - key_offset + ASCII_LIMIT)%ASCII_LIMIT) + ASCII_OFFSET;
-			printf("ch: %c\n", ch_o);
-			printf("ch value: %d\n", ch_o);
 
 			//write to output file
 			fprintf(output_file,"%c", ch_o);
@@ -154,6 +131,9 @@ int decrypt_file(char *in_filename, char *out_filename, char *key){
 			if(key[key_index] == '\n')
 				key_index = 0;
 		}
+
+		else
+			fprintf(output_file, "%c", '\n');
 
 		//pull new character
 		ch = fgetc(input_file);
